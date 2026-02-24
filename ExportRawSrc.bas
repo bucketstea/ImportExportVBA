@@ -2,9 +2,6 @@ Attribute VB_Name = "ExportRawSrc"
 Option Explicit
 
 Public Sub ExportAllModules()
-    ' ==========================================
-    ' ↓ここに対象となるExcelブックのフルパスを直打ちしてください↓
-    ' ==========================================
     Dim targetPath As String: targetPath = ActiveSheet.Cells(2, 2)
     
     ' 対象ブックを開く（安全のため読み取り専用で）
