@@ -1,22 +1,24 @@
-Attribute VB_Name = "ExportRawSrc"
 Option Explicit
 
 Public Sub ExportAllModules()
+    ' ==========================================
+    ' â†“ã“ã“ã«å¯¾è±¡ã¨ãªã‚‹Excelãƒ–ãƒƒã‚¯ã®ãƒ•ãƒ«ãƒ‘ã‚¹ã‚’ç›´æ‰“ã¡ã—ã¦ãã ã•ã„â†“
+    ' ==========================================
     Dim targetPath As String: targetPath = ActiveSheet.Cells(2, 2)
     
-    ' ‘ÎÛƒuƒbƒN‚ğŠJ‚­iˆÀ‘S‚Ì‚½‚ß“Ç‚İæ‚èê—p‚Åj
+    ' å¯¾è±¡ãƒ–ãƒƒã‚¯ã‚’é–‹ãï¼ˆå®‰å…¨ã®ãŸã‚èª­ã¿å–ã‚Šå°‚ç”¨ã§ï¼‰
     Dim targetBook As Workbook: Set targetBook = Workbooks.Open(Filename:=targetPath, ReadOnly:=True)
     
-    ' o—ÍæƒfƒBƒŒƒNƒgƒŠi‘ÎÛƒuƒbƒN‚Æ“¯‚¶ŠK‘w‚É "_vba_export" ƒtƒHƒ‹ƒ_‚ğì¬j
+    ' å‡ºåŠ›å…ˆãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªï¼ˆå¯¾è±¡ãƒ–ãƒƒã‚¯ã¨åŒã˜éšå±¤ã« "_vba_export" ãƒ•ã‚©ãƒ«ãƒ€ã‚’ä½œæˆï¼‰
     Dim outDir As String: outDir = targetBook.Path & "\_vba_export\"
     If Dir(outDir, vbDirectory) = "" Then MkDir outDir
     
-    ' ‘ÎÛƒuƒbƒN‚ÌVBProject‚ğæ“¾
+    ' å¯¾è±¡ãƒ–ãƒƒã‚¯ã®VBProjectã‚’å–å¾—
     Dim vbProj As VBIDE.VBProject: Set vbProj = targetBook.VBProject
     
     Dim comp As VBIDE.VBComponent
     For Each comp In vbProj.VBComponents
-        ' “Á’è‚Ìƒ‚ƒWƒ…[ƒ‹‚ğƒXƒLƒbƒv_“K‹X•ÏX‚µ‚Ä
+        ' ç‰¹å®šã®ãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«ã‚’ã‚¹ã‚­ãƒƒãƒ—_é©å®œå¤‰æ›´ã—ã¦
         If InStr(comp.Name, "Sheet") > 0 Then GoTo Continue
         If InStr(comp.Name, "ThisWorkbook") > 0 Then GoTo Continue
         
@@ -27,17 +29,17 @@ Public Sub ExportAllModules()
 Continue:
     Next comp
     
-    ' ‘ÎÛƒuƒbƒN‚ğ•Â‚¶‚éi•Û‘¶‚µ‚È‚¢j
+    ' å¯¾è±¡ãƒ–ãƒƒã‚¯ã‚’é–‰ã˜ã‚‹ï¼ˆä¿å­˜ã—ãªã„ï¼‰
     targetBook.Close SaveChanges:=False
     
-    MsgBox "ˆÈ‰º‚ÌƒtƒHƒ‹ƒ_‚Éƒ\[ƒX‚ğo—Í‚µ‚Ü‚µ‚½B: " & vbCrLf & outDir, vbInformation, "ƒGƒNƒXƒ|[ƒgŠ®—¹"
+    MsgBox "ä»¥ä¸‹ã®ãƒ•ã‚©ãƒ«ãƒ€ã«ã‚½ãƒ¼ã‚¹ã‚’å‡ºåŠ›ã—ã¾ã—ãŸã€‚: " & vbCrLf & outDir, vbInformation, "ã‚¨ã‚¯ã‚¹ãƒãƒ¼ãƒˆå®Œäº†"
 End Sub
 
 Private Function ModuleExt(t As VBIDE.vbext_ComponentType) As String
     Select Case t
         Case vbext_ct_StdModule:  ModuleExt = ".bas"
         Case vbext_ct_ClassModule: ModuleExt = ".cls"
-        Case vbext_ct_MSForm:     ModuleExt = ".frm" ' Export‚É .frx ‚à“¯‚Éo—Í‚³‚ê‚Ü‚·
+        Case vbext_ct_MSForm:     ModuleExt = ".frm" ' Exportæ™‚ã« .frx ã‚‚åŒæ™‚ã«å‡ºåŠ›ã•ã‚Œã¾ã™
         Case vbext_ct_Document:   ModuleExt = ".cls" ' ThisWorkbook/Sheet
         Case Else:                ModuleExt = ".txt"
     End Select
