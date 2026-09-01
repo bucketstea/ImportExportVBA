@@ -1,18 +1,17 @@
-Attribute VB_Name = "ExportByTxt"
 Option Explicit
 
 Public Sub ExportVbaFilesAsTxt_Modern()
     ' ==========================================
-    ' “ü—ÍŒ³‚Æo—Íæ‚ÌƒtƒHƒ‹ƒ_ƒpƒX‚ğw’è
+    ' å…¥åŠ›å…ƒã¨å‡ºåŠ›å…ˆã®ãƒ•ã‚©ãƒ«ãƒ€ãƒ‘ã‚¹ã‚’æŒ‡å®š
     ' ==========================================
     Dim srcPath As String: srcPath = ActiveSheet.Cells(11, 2).Value
     Dim outPath As String: outPath = ActiveSheet.Cells(12, 2).Value
 
     Dim fso As Object: Set fso = CreateObject("Scripting.FileSystemObject")
 
-    ' ƒtƒHƒ‹ƒ_ƒ`ƒFƒbƒN
+    ' ãƒ•ã‚©ãƒ«ãƒ€ãƒã‚§ãƒƒã‚¯
     If Not fso.FolderExists(srcPath) Then
-        MsgBox "ƒ\[ƒXƒtƒHƒ‹ƒ_‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ:" & vbCrLf & srcPath, vbExclamation, "ƒGƒ‰["
+        MsgBox "ã‚½ãƒ¼ã‚¹ãƒ•ã‚©ãƒ«ãƒ€ãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“:" & vbCrLf & srcPath, vbExclamation, "ã‚¨ãƒ©ãƒ¼"
         Exit Sub
     End If
     If Not fso.FolderExists(outPath) Then fso.CreateFolder outPath
@@ -21,23 +20,23 @@ Public Sub ExportVbaFilesAsTxt_Modern()
     Dim count As Integer: count = 0
     Dim file As Object
 
-    ' ADODB.StreamƒIƒuƒWƒFƒNƒg‚Ì€”õ
+    ' ADODB.Streamã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®æº–å‚™
     Dim readStream As Object: Set readStream = CreateObject("ADODB.Stream")
     Dim writeStream As Object: Set writeStream = CreateObject("ADODB.Stream")
 
     For Each file In srcFolder.Files
         Dim ext As String: ext = LCase(fso.GetExtensionName(file.Name))
 
-        ' ‘ÎÛŠg’£q‚Ì”»’è
+        ' å¯¾è±¡æ‹¡å¼µå­ã®åˆ¤å®š
         If ext = "bas" Or ext = "cls" Or ext = "frm" Then
             
-            ' o—Íƒtƒ@ƒCƒ‹–¼‚Ìì¬
+            ' å‡ºåŠ›ãƒ•ã‚¡ã‚¤ãƒ«åã®ä½œæˆ
             Dim newFileName As String: newFileName = fso.GetBaseName(file.Name) & "_" & ext & ".txt"
             Dim destPath As String: destPath = fso.BuildPath(outPath, newFileName)
 
-            ' --- •¶šƒR[ƒh•ÏŠ·ˆ— ---
+            ' --- æ–‡å­—ã‚³ãƒ¼ãƒ‰å¤‰æ›å‡¦ç† ---
             
-            ' 1. Œ³ƒtƒ@ƒCƒ‹‚ğ“Ç‚İ‚Ş (Shift-JIS‚Æ‚µ‚Ä“Ç‚İ‚İ)
+            ' 1. å…ƒãƒ•ã‚¡ã‚¤ãƒ«ã‚’èª­ã¿è¾¼ã‚€ (Shift-JISã¨ã—ã¦èª­ã¿è¾¼ã¿)
             readStream.Open
             readStream.Type = 2 ' adTypeText
             readStream.Charset = "Shift-JIS"
@@ -45,10 +44,10 @@ Public Sub ExportVbaFilesAsTxt_Modern()
             Dim content As String: content = readStream.ReadText
             readStream.Close
 
-            ' 2. UTF-8(BOM—L)‚Å‘‚«o‚·
+            ' 2. UTF-8(BOMæœ‰)ã§æ›¸ãå‡ºã™
             writeStream.Open
             writeStream.Type = 2 ' adTypeText
-            writeStream.Charset = "UTF-8" ' ADODB‚ÍƒfƒtƒHƒ‹ƒg‚ÅBOM‚ğ•t—^‚µ‚Ü‚·
+            writeStream.Charset = "UTF-8" ' ADODBã¯ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã§BOMã‚’ä»˜ä¸ã—ã¾ã™
             writeStream.WriteText content
             writeStream.SaveToFile destPath, 2 ' adSaveCreateOverWrite
             writeStream.Close
@@ -57,7 +56,7 @@ Public Sub ExportVbaFilesAsTxt_Modern()
         End If
     Next file
 
-    MsgBox count & " Œ‚Ìƒtƒ@ƒCƒ‹‚ğBOM•tUTF-8Œ`®‚Å•Û‘¶‚µ‚Ü‚µ‚½I", vbInformation, "ˆ—Š®—¹"
+    MsgBox count & " ä»¶ã®ãƒ•ã‚¡ã‚¤ãƒ«ã‚’BOMä»˜UTF-8å½¢å¼ã§ä¿å­˜ã—ã¾ã—ãŸï¼", vbInformation, "å‡¦ç†å®Œäº†"
 
     Set fso = Nothing
     Set readStream = Nothing
