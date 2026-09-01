@@ -1,4 +1,3 @@
-Attribute VB_Name = "ImportSrc"
 Option Explicit
 Public Sub importAll()
     Dim targetFile   As String:   targetFile = ActiveSheet.Cells(6, 2).Value
@@ -6,8 +5,8 @@ Public Sub importAll()
     Call ImportVbaSourcesFromFolder(targetFile, targetFolder)
 End Sub
 
-' === ŒöŠJƒGƒ“ƒgƒŠƒ|ƒCƒ“ƒgiPowerShell‚©‚ç’@‚­j===
-' ˆø” folderPath: “WŠJ‚µ‚½ƒ\[ƒXŠi”[ƒtƒHƒ‹ƒ_i––”ö\ ‚ ‚è‚È‚µOKj
+' === å…¬é–‹ã‚¨ãƒ³ãƒˆãƒªãƒã‚¤ãƒ³ãƒˆï¼ˆPowerShellã‹ã‚‰å©ãï¼‰===
+' å¼•æ•° folderPath: å±•é–‹ã—ãŸã‚½ãƒ¼ã‚¹æ ¼ç´ãƒ•ã‚©ãƒ«ãƒ€ï¼ˆæœ«å°¾\ ã‚ã‚Šãªã—OKï¼‰
 Private Sub ImportVbaSourcesFromFolder(ByVal filePath As String, _
                                        ByVal folderPath As String)
     Dim wb As Workbook: Set wb = Workbooks.Open(Filename:=filePath, ReadOnly:=False)
@@ -19,10 +18,10 @@ Private Sub ImportVbaSourcesFromFolder(ByVal filePath As String, _
     End If
     Dim fld As Object: Set fld = fso.GetFolder(folderPath)
 
-    ' 1) Šù‘¶ƒ‚ƒWƒ…[ƒ‹‚ğ•K—v‚É‰‚¶‚ÄíœiˆÀ‘S‘¤‚Éu•W€/ƒNƒ‰ƒX‚Ì‚İvíœj
+    ' 1) æ—¢å­˜ãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«ã‚’å¿…è¦ã«å¿œã˜ã¦å‰Šé™¤ï¼ˆå®‰å…¨å´ã«ã€Œæ¨™æº–/ã‚¯ãƒ©ã‚¹ã®ã¿ã€å‰Šé™¤ï¼‰
 '    RemoveAllStdAndClassModules vbProj
 
-    ' 2) ƒtƒ@ƒCƒ‹‚ğ‘SƒCƒ“ƒ|[ƒg
+    ' 2) ãƒ•ã‚¡ã‚¤ãƒ«ã‚’å…¨ã‚¤ãƒ³ãƒãƒ¼ãƒˆ
     Dim fil As Object
     For Each fil In fld.Files
         Dim ext As String: ext = LCase$(fso.GetExtensionName(fil.Path))
@@ -34,11 +33,11 @@ Private Sub ImportVbaSourcesFromFolder(ByVal filePath As String, _
         End Select
     Next fil
     
-    ' 3) ƒtƒH[ƒ€(.frm)‚ª‚ ‚éê‡A“¯–¼‚Ì.frx‚ª•K—vi“¯ƒtƒHƒ‹ƒ_‚É’u‚©‚ê‚Ä‚¢‚ê‚ÎOKj
-    ' 4) •Û‘¶
+    ' 3) ãƒ•ã‚©ãƒ¼ãƒ (.frm)ãŒã‚ã‚‹å ´åˆã€åŒåã®.frxãŒå¿…è¦ï¼ˆåŒãƒ•ã‚©ãƒ«ãƒ€ã«ç½®ã‹ã‚Œã¦ã„ã‚Œã°OKï¼‰
+    ' 4) ä¿å­˜
 '    ThisWorkbook.Save
     
-    MsgBox wb.Name & "‚ÉA" & folderPath & "‚Ìƒ\[ƒXƒtƒ@ƒCƒ‹‚ğæ‚è‚İ‚Ü‚µ‚½B"
+    MsgBox wb.Name & "ã«ã€" & folderPath & "ã®ã‚½ãƒ¼ã‚¹ãƒ•ã‚¡ã‚¤ãƒ«ã‚’å–ã‚Šè¾¼ã¿ã¾ã—ãŸã€‚"
 End Sub
 
 Private Sub RemoveAllStdAndClassModules(ByVal vbProj As VBIDE.VBProject)
@@ -49,7 +48,7 @@ Private Sub RemoveAllStdAndClassModules(ByVal vbProj As VBIDE.VBProject)
     For Each comp In vbProj.VBComponents
         Select Case comp.Type
             Case vbext_ct_StdModule, vbext_ct_ClassModule
-                ' ¦ThisWorkbook/Sheet/ƒtƒH[ƒ€‚Ííœ‚µ‚È‚¢
+                ' â€»ThisWorkbook/Sheet/ãƒ•ã‚©ãƒ¼ãƒ ã¯å‰Šé™¤ã—ãªã„
                 toRemove.Add comp
         End Select
     Next comp
